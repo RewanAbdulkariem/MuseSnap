@@ -2,7 +2,3 @@ streamlit
 opencv-python
 ultralytics
 Pillow
-numpy
-base64
-requests
-distutils
