@@ -2,6 +2,6 @@ streamlit
 opencv-python
 ultralytics
 Pillow
-numpy
+numpy==1.23.3
 base64
 requests
