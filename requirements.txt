@@ -1,4 +1,5 @@
-streamlit
-opencv-python
-ultralytics
-Pillow
+streamlit==1.41.1
+opencv-python-headless==4.11.0.66  # Use headless to avoid GUI dependencies
+ultralytics==8.3.66
+numpy==2.2.2
+Pillow==11.1.0
