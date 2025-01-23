@@ -1,6 +1,8 @@
-streamlit==1.17.0
-opencv-python==4.7.0.72
-ultralytics==8.0.0
-Pillow==8.4.0
-numpy==1.23.3
-
+streamlit
+opencv-python
+ultralytics
+Pillow
+numpy
+base64
+requests
+distutils
