@@ -1,5 +1,5 @@
-streamlit==1.41.1
-opencv-python-headless==4.10.0.86  # A stable version of opencv-python-headless
-ultralytics==8.3.66
-numpy==2.2.2
-Pillow==11.1.0
+streamlit
+opencv-python-headless
+ultralytics
+numpy
+Pillow
