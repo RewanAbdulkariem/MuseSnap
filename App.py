@@ -1,4 +1,3 @@
-import cv2
 import warnings
 import base64
 import random
@@ -7,6 +6,9 @@ from urllib.parse import quote
 
 import streamlit as st
 from ultralytics import YOLO
+from PIL import Image
+from io import BytesIO
+
 
 # Suppress deprecation warnings
 warnings.filterwarnings("ignore")
@@ -34,9 +36,9 @@ def initialize_session_state():
 
 def image_to_base64(image):
     """Convert an image to a base64-encoded string."""
-    _, buffer = cv2.imencode('.jpg', image)
-    img_as_text = base64.b64encode(buffer).decode('utf-8')
-    return img_as_text
+    buffered = BytesIO()
+    image.save(buffered, format="JPEG")
+    img_as_text = base64.b64encode(buffered.getvalue()).decode('utf-8')
 
 def load_model_and_descriptions():
     """Load the YOLO model and class descriptions, caching the result"""
@@ -65,17 +67,10 @@ def predict_image(image_path):
 
     # Get the description for the predicted class
     description = class_descriptions.get(predicted_class, "No description available.")
-
     # Image processing for display
-    image = cv2.imread(image_path)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    height, width, _ = image.shape
+    image = Image.open(image_path).convert("RGB")
+    return  image, predicted_class, confidence, description
 
-    # Overlay prediction text
-    cv2.rectangle(image, (0, 0), (width, 30), (108, 99, 255), -1)
-    cv2.putText(image, predicted_class, (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
-
-    return image, predicted_class, confidence, description
 
 def display_prediction_results(image, predicted_class, confidence, description):
     """
@@ -180,7 +175,7 @@ def add_footer():
         }
         </style>
         <div class="footer">
-            Developed by Farida Adham 🎴
+            Developed by Farida Adham 😎
         </div>
         """, unsafe_allow_html=True)
 
@@ -210,7 +205,7 @@ def culture_detection_tab():
                 image, predicted_class, confidence, description = predict_image(temp_image_path)
 
             # Display results
-            display_prediction_results(image, predicted_class, confidence, description)
+            display_prediction_results(image ,predicted_class, confidence, description)
         else:
             st.info("Please upload an image to get started.")
 
@@ -233,8 +228,8 @@ def culture_detection_tab():
             st.info("Please capture an image to get started.")
 
 def game_tab():
-    """Content for the Game tab."""
-    st.header("🎮 Guess the Art Piece Game")
+    """Content for the Artifacts hunting tab."""
+    st.header("Hunt the Artifacts Game 🎯")
     st.markdown("Try to capture an image of the given art piece!")
 
     # Display game stats
@@ -364,11 +359,11 @@ def quiz_tab():
 def about_tab():
     """Content for the About tab with minimal CSS."""
     # App Introduction
-    st.title("🎨 Culture Classification App")
+    st.title("📷 MuseSnap")
     
     st.info("""
-        Welcome to an innovative application that bridges technology and cultural heritage! 
-        Our app uses advanced AI to help you explore and learn about various cultural artifacts and artworks.
+        Welcome to an innovative Website that bridges technology and cultural heritage! 
+        Our website uses advanced AI to help you explore and learn about various cultural artifacts and artworks.
     """)
 
     # Key Features Section
@@ -393,7 +388,7 @@ def about_tab():
         1. Upload an image or use your camera to capture an art piece
         2. Our AI model analyzes the image using YOLO technology
         3. Receive instant identification with confidence scores
-        4. Learn about the artifact through detailed descriptions
+        4. Learn about the artifact through fun and lighthearted detailed descriptions
         5. Save or share your discoveries
     """)
 
@@ -435,13 +430,13 @@ def main():
     # Load the model and descriptions
     load_model_and_descriptions()
 
-    tab_options = ["Artifacts scanner", "Game", "Quiz", "About"]
+    tab_options = ["Artifacts scanner", "Artifacts hunting", "Quiz", "About"]
     selected_tab = st.sidebar.radio(
             "Navigation",
             tab_options,
             format_func=lambda x: {
                 "Artifacts scanner": "🔍 Artifacts scanner",
-                "Game": "🎮 Game",
+                "Artifacts hunting": "🎯 Artifacts hunting",
                 "Quiz": "📝 Quiz",
                 "About": "ℹ️ About"
             }[x]
@@ -449,7 +444,7 @@ def main():
     # Render the selected tab
     if selected_tab == "Artifacts scanner":
         culture_detection_tab()
-    elif selected_tab == "Game":
+    elif selected_tab == "Artifacts hunting":
         game_tab()
     elif selected_tab == "Quiz":
         quiz_tab()
