@@ -185,15 +185,15 @@ def add_footer():
         """, unsafe_allow_html=True)
 
 def culture_detection_tab():
-    """Content for the Culture Detection tab."""
-    st.header("🎴 Artfact Recogination")
+    """Content for the Artifacts scanner tab."""
+    st.header(" Artifact Recogination")
     st.markdown("Upload an image or use your camera to detect the art piece.")
 
     # Input method selection
     input_method = st.radio(
         "Choose input method:",
         ["Upload Image", "Use Camera"],
-        format_func=lambda x: f"📁 {x}" if x == "Upload Image" else f"📸 {x}"
+        format_func=lambda x: f"📁 {x}" if x == "Upload Image" else f"📷 {x}"
     )
 
     if input_method == "Upload Image":
@@ -410,7 +410,7 @@ def main():
     """Main function to run the Streamlit app."""
     st.set_page_config(
         page_title="MuseSnap",
-        page_icon="🎨",
+        page_icon="📷",
         layout="wide",
         initial_sidebar_state="expanded",
     )
@@ -428,26 +428,26 @@ def main():
             padding:10px;
         }
         </style>
-        <div class="header">MuseSnap🎨</div>
+        <div class="header">MuseSnap📷</div>
         """, unsafe_allow_html=True)
 
 
     # Load the model and descriptions
     load_model_and_descriptions()
 
-    tab_options = ["Culture Detection", "Game", "Quiz", "About"]
+    tab_options = ["Artifacts scanner", "Game", "Quiz", "About"]
     selected_tab = st.sidebar.radio(
             "Navigation",
             tab_options,
             format_func=lambda x: {
-                "Culture Detection": "🔍 Culture Detection",
+                "Artifacts scanner": "🔍 Artifacts scanner",
                 "Game": "🎮 Game",
                 "Quiz": "📝 Quiz",
                 "About": "ℹ️ About"
             }[x]
     )
     # Render the selected tab
-    if selected_tab == "Culture Detection":
+    if selected_tab == "Artifacts scanner":
         culture_detection_tab()
     elif selected_tab == "Game":
         game_tab()
